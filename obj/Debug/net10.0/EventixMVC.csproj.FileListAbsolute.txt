@@ -185,3 +185,4 @@ C:\Users\User\RiderProjects\EventixMVC\obj\Debug\net10.0\refint\EventixMVC.dll
 C:\Users\User\RiderProjects\EventixMVC\obj\Debug\net10.0\EventixMVC.pdb
 C:\Users\User\RiderProjects\EventixMVC\obj\Debug\net10.0\EventixMVC.genruntimeconfig.cache
 C:\Users\User\RiderProjects\EventixMVC\obj\Debug\net10.0\ref\EventixMVC.dll
+C:\Users\User\RiderProjects\EventixMVC\obj\Debug\net10.0\EventixMVC.sourcelink.json

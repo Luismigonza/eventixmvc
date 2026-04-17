@@ -8,16 +8,31 @@
 
         <!-- Filtros por categoría -->
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-            <a href="/Event/Gallery" class="btn-small waves-effect"
-               style="background-color:#E040FB;">Todos</a>
-            <a href="/Event/Gallery?category=Música" class="btn-small waves-effect"
-               style="background-color:#333;">Música</a>
-            <a href="/Event/Gallery?category=Anime" class="btn-small waves-effect"
-               style="background-color:#333;">Anime</a>
-            <a href="/Event/Gallery?category=Deportes" class="btn-small waves-effect"
-               style="background-color:#333;">Deportes</a>
-            <a href="/Event/Gallery?category=Cultural" class="btn-small waves-effect"
-               style="background-color:#333;">Cultural</a>
+            <a href="/Event/Gallery" 
+               class="btn-small waves-effect"
+               style="background-color:@(string.IsNullOrEmpty(Context.Request.Query["category"].ToString()) ? "#E040FB" : "#333");">
+                Todos
+            </a>
+            <a href="/Event/Gallery?category=Música"
+               class="btn-small waves-effect"
+               style="background-color:@(Context.Request.Query["category"] == "Música" ? "#E040FB" : "#333");">
+                Música
+            </a>
+            <a href="/Event/Gallery?category=Anime"
+               class="btn-small waves-effect"
+               style="background-color:@(Context.Request.Query["category"] == "Anime" ? "#E040FB" : "#333");">
+                Anime
+            </a>
+            <a href="/Event/Gallery?category=Deportes"
+               class="btn-small waves-effect"
+               style="background-color:@(Context.Request.Query["category"] == "Deportes" ? "#E040FB" : "#333");">
+                Deportes
+            </a>
+            <a href="/Event/Gallery?category=Cultural"
+               class="btn-small waves-effect"
+               style="background-color:@(Context.Request.Query["category"] == "Cultural" ? "#E040FB" : "#333");">
+                Cultural
+            </a>
         </div>
     </div>
 </div>
@@ -30,7 +45,7 @@
                 <div class="card-image">
                     <img src="@evento.ImageUrl" 
                          style="height:180px; object-fit:cover; border-radius:12px 12px 0 0;"
-                         onerror="this.src='https://via.placeholder.com/400x180?text=Sin+imagen'" />
+                         onerror="this.src=''; this.style.display='none';" />
                     <span class="card-title" style="font-family:'Bebas Neue',sans-serif; 
                                                      letter-spacing:2px;">
                         @evento.Name
@@ -47,10 +62,9 @@
                         @evento.Date.ToString("dd/MM/yyyy")
                     </p>
                 </div>
-                <div class="card-action" style="border-top:1px solid #333;">
-                    <span class="new badge" style="background-color:#E040FB; float:left; 
-                                                    position:relative; margin:4px 0;"
-                          data-badge-caption="">
+                <div class="card-action" style="border-top:1px solid #333; padding:10px 16px;">
+                    <span style="background-color:#E040FB; color:#fff; padding:3px 12px;
+                                 border-radius:999px; font-size:12px; font-weight:500;">
                         @evento.Category
                     </span>
                 </div>

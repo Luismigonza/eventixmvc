@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EventixMVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+538facd223b7a7b88332808eb1ea1b357a486e42")]
 [assembly: System.Reflection.AssemblyProductAttribute("EventixMVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EventixMVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
