@@ -1,58 +1,80 @@
 ﻿@model IEnumerable<EventixMVC.Models.Event>
 
-<div class="row">
-    <div class="col s12">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h5 style="color:#E040FB; font-family:'Bebas Neue',sans-serif; letter-spacing:2px;">
-                Panel de Administración
-            </h5>
-            <a href="/Event/Create" class="btn waves-effect waves-light" 
-               style="background-color:#E040FB;">
-                <i class="material-icons left">add</i>Nuevo Evento
-            </a>
+<main>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:28px;">
+        <div>
+            <h4 style="font-family:'Bebas Neue',sans-serif; letter-spacing:2px;
+                       color:#E040FB; margin:0;">Panel de Administración</h4>
+            <p style="color:rgba(255,255,255,0.4); font-size:13px; margin:4px 0 0;">
+                @Model.Count() eventos registrados
+            </p>
         </div>
+        <a href="/Event/Create" class="btn waves-effect waves-light"
+           style="background-color:#E040FB;">
+            <i class="material-icons left">add</i>Nuevo Evento
+        </a>
+    </div>
 
-        <table class="striped responsive-table" style="background:#1a1a2e; border-radius:8px;">
+    <div style="background:#1a1a2e; border-radius:16px; overflow:hidden; border:1px solid #222;">
+        <table class="striped responsive-table" style="margin:0;">
             <thead>
-                <tr style="border-bottom: 1px solid #333;">
-                    <th style="color:#E040FB;">Nombre</th>
-                    <th style="color:#E040FB;">Fecha</th>
-                    <th style="color:#E040FB;">Ubicación</th>
-                    <th style="color:#E040FB;">Categoría</th>
-                    <th style="color:#E040FB;">Acciones</th>
+                <tr style="background:#16162a;">
+                    <th style="color:#E040FB; font-size:12px; text-transform:uppercase; letter-spacing:1px;">Nombre</th>
+                    <th style="color:#E040FB; font-size:12px; text-transform:uppercase; letter-spacing:1px;">Fecha</th>
+                    <th style="color:#E040FB; font-size:12px; text-transform:uppercase; letter-spacing:1px;">Ubicación</th>
+                    <th style="color:#E040FB; font-size:12px; text-transform:uppercase; letter-spacing:1px;">Categoría</th>
+                    <th style="color:#E040FB; font-size:12px; text-transform:uppercase; letter-spacing:1px;">Estado</th>
+                    <th style="color:#E040FB; font-size:12px; text-transform:uppercase; letter-spacing:1px;">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var evento in Model)
-                {
-                    <tr style="border-bottom: 1px solid #222;">
-                        <td style="color:#fff;">@evento.Name</td>
-                        <td style="color:#aaa;">@evento.Date.ToString("dd/MM/yyyy")</td>
-                        <td style="color:#aaa;">@evento.Location</td>
-                        <td>
-                            <span class="new badge" style="background-color:#E040FB;" 
-                                  data-badge-caption="">
-                                @evento.Category
-                            </span>
-                        </td>
-                        <td>
-                            <a href="/Event/Edit/@evento.Id" 
-                               class="btn-small waves-effect" 
-                               style="background-color:#333; margin-right:5px;">
-                                <i class="material-icons">edit</i>
-                            </a>
-                            <form action="/Event/Delete" method="post" style="display:inline;">
-                                <input type="hidden" name="id" value="@evento.Id" />
-                                <button type="submit" class="btn-small waves-effect"
-                                        style="background-color:#c62828;"
-                                        onclick="return confirm('¿Eliminar este evento?')">
-                                    <i class="material-icons">delete</i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                }
+{
+    <tr style="border-bottom:1px solid #222;">
+        <td style="color:#fff; font-weight:500;">@evento.Name</td>
+        <td style="color:rgba(255,255,255,0.5); font-size:13px;">@evento.Date.ToString("dd/MM/yyyy")</td>
+        <td style="color:rgba(255,255,255,0.5); font-size:13px;">@evento.Location</td>
+        <td>
+            <span style="background:#E040FB; color:#fff; padding:3px 10px;
+                         border-radius:999px; font-size:11px; font-weight:500;">
+                @evento.Category
+            </span>
+        </td>
+        <td>
+            <span style="background:@(evento.Status == "Activo" ? "#66bb6a" : evento.Status == "Cancelado" ? "#ef5350" : evento.Status == "Agotado" ? "#ffa726" : "#888"); 
+                         color:#fff; padding:3px 10px; border-radius:999px; font-size:11px; font-weight:500;">
+                @evento.Status
+            </span>
+        </td>
+        <td>
+            <div style="display:flex; gap:6px;">
+                <a href="/Event/Detail/@evento.Id"
+                   style="width:32px; height:32px; background:#252540; border-radius:8px;
+                          display:flex; align-items:center; justify-content:center;
+                          color:rgba(255,255,255,0.6); text-decoration:none;">
+                    <i class="material-icons" style="font-size:16px;">visibility</i>
+                </a>
+                <a href="/Event/Edit/@evento.Id"
+                   style="width:32px; height:32px; background:#252540; border-radius:8px;
+                          display:flex; align-items:center; justify-content:center;
+                          color:rgba(255,255,255,0.6); text-decoration:none;">
+                    <i class="material-icons" style="font-size:16px;">edit</i>
+                </a>
+                <form action="/Event/Delete" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@evento.Id" />
+                    <button type="submit"
+                            style="width:32px; height:32px; background:#2a1a1a; border-radius:8px;
+                                   display:flex; align-items:center; justify-content:center;
+                                   color:#ef5350; border:none; cursor:pointer;"
+                            onclick="return confirm('¿Marcar como eliminado?')">
+                        <i class="material-icons" style="font-size:16px;">delete</i>
+                    </button>
+                </form>
+            </div>
+        </td>
+    </tr>
+}
             </tbody>
         </table>
     </div>
-</div>
+</main>

@@ -1,82 +1,119 @@
 ﻿@model IEnumerable<EventixMVC.Models.Event>
 
-<div class="row">
-    <div class="col s12" style="margin-bottom:20px;">
-        <h4 style="color:#E040FB; font-family:'Bebas Neue',sans-serif; letter-spacing:3px;">
-            Cartelera de Eventos
-        </h4>
-
-        <!-- Filtros por categoría -->
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-            <a href="/Event/Gallery" 
-               class="btn-small waves-effect"
-               style="background-color:@(string.IsNullOrEmpty(Context.Request.Query["category"].ToString()) ? "#E040FB" : "#333");">
-                Todos
-            </a>
-            <a href="/Event/Gallery?category=Música"
-               class="btn-small waves-effect"
-               style="background-color:@(Context.Request.Query["category"] == "Música" ? "#E040FB" : "#333");">
-                Música
-            </a>
-            <a href="/Event/Gallery?category=Anime"
-               class="btn-small waves-effect"
-               style="background-color:@(Context.Request.Query["category"] == "Anime" ? "#E040FB" : "#333");">
-                Anime
-            </a>
-            <a href="/Event/Gallery?category=Deportes"
-               class="btn-small waves-effect"
-               style="background-color:@(Context.Request.Query["category"] == "Deportes" ? "#E040FB" : "#333");">
-                Deportes
-            </a>
-            <a href="/Event/Gallery?category=Cultural"
-               class="btn-small waves-effect"
-               style="background-color:@(Context.Request.Query["category"] == "Cultural" ? "#E040FB" : "#333");">
-                Cultural
-            </a>
+<!-- Hero -->
+<div class="hero">
+    <h1>CARTE<span>LERA</span></h1>
+    <p>Descubre los mejores eventos cerca de ti</p>
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <div class="number">@Model.Count()</div>
+            <div class="label">Eventos activos</div>
+        </div>
+        <div class="hero-stat">
+            <div class="number">@Model.Select(e => e.Category).Distinct().Count()</div>
+            <div class="label">Categorías</div>
+        </div>
+        <div class="hero-stat">
+            <div class="number">@Model.Count(e => e.Date >= DateTime.Today)</div>
+            <div class="label">Próximos eventos</div>
         </div>
     </div>
 </div>
 
-<div class="row">
-    @foreach (var evento in Model)
-    {
-        <div class="col s12 m6 l4">
-            <div class="card" style="background-color:#1a1a2e; border-radius:12px;">
-                <div class="card-image">
-                    <img src="@evento.ImageUrl" 
-                         style="height:180px; object-fit:cover; border-radius:12px 12px 0 0;"
-                         onerror="this.src=''; this.style.display='none';" />
-                    <span class="card-title" style="font-family:'Bebas Neue',sans-serif; 
-                                                     letter-spacing:2px;">
-                        @evento.Name
-                    </span>
+<main>
+    <!-- Filtros -->
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:32px; align-items:center;">
+        <span style="color:rgba(255,255,255,0.4); font-size:13px; margin-right:4px;">Filtrar:</span>
+        <a href="/Event/Gallery"
+           style="padding:6px 18px; border-radius:999px; font-size:13px; font-weight:500; text-decoration:none;
+                  background-color:@(string.IsNullOrEmpty(Context.Request.Query["category"].ToString()) ? "#E040FB" : "#1a1a2e");
+                  color:@(string.IsNullOrEmpty(Context.Request.Query["category"].ToString()) ? "#fff" : "rgba(255,255,255,0.6)");
+                  border: 1px solid @(string.IsNullOrEmpty(Context.Request.Query["category"].ToString()) ? "#E040FB" : "#333");">
+            Todos
+        </a>
+        @foreach (var cat in new[] { "Música", "Anime", "Deportes", "Cultural" })
+        {
+            <a href="/Event/Gallery?category=@cat"
+               style="padding:6px 18px; border-radius:999px; font-size:13px; font-weight:500; text-decoration:none;
+                      background-color:@(Context.Request.Query["category"] == cat ? "#E040FB" : "#1a1a2e");
+                      color:@(Context.Request.Query["category"] == cat ? "#fff" : "rgba(255,255,255,0.6)");
+                      border: 1px solid @(Context.Request.Query["category"] == cat ? "#E040FB" : "#333");">
+                @cat
+            </a>
+        }
+    </div>
+
+    <!-- Cards -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:24px;">
+        @foreach (var evento in Model)
+        {
+            <div style="background:#1a1a2e; border-radius:16px; overflow:hidden; border:1px solid #222;
+                        transition:transform 0.2s, border-color 0.2s;"
+                 onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='#E040FB';"
+                 onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#222';">
+
+                <!-- Imagen -->
+                @if (!string.IsNullOrEmpty(evento.ImageUrl))
+                {
+                    <img src="@evento.ImageUrl"
+                         style="width:100%; height:200px; object-fit:cover;"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                }
+                <div style="height:200px; background:#252540; display:@(string.IsNullOrEmpty(evento.ImageUrl) ? "flex" : "none");
+                            align-items:center; justify-content:center;">
+                    <i class="material-icons" style="font-size:56px; color:#333;">image_not_supported</i>
                 </div>
-                <div class="card-content" style="color:#ccc;">
-                    <p style="margin-bottom:8px;">@evento.Description</p>
-                    <p>
-                        <i class="material-icons tiny" style="color:#E040FB;">location_on</i>
-                        @evento.Location
+
+                <!-- Contenido -->
+                <div style="padding:20px;">
+                    <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:12px;">
+                        <h5 style="font-family:'Bebas Neue',sans-serif; font-size:22px;
+                                   letter-spacing:1px; color:#fff; margin:0; line-height:1.2;">
+                            @evento.Name
+                        </h5>
+                        <span style="background:#E040FB; color:#fff; padding:3px 10px;
+                                     border-radius:999px; font-size:11px; font-weight:500; white-space:nowrap; margin-left:8px;">
+                            @evento.Category
+                        </span>
+                    </div>
+
+                    <p style="color:rgba(255,255,255,0.5); font-size:13px; margin-bottom:16px; line-height:1.5;">
+                        @(evento.Description.Length > 80 ? evento.Description.Substring(0, 80) + "..." : evento.Description)
                     </p>
-                    <p>
-                        <i class="material-icons tiny" style="color:#E040FB;">event</i>
-                        @evento.Date.ToString("dd/MM/yyyy")
-                    </p>
-                </div>
-                <div class="card-action" style="border-top:1px solid #333; padding:10px 16px;">
-                    <span style="background-color:#E040FB; color:#fff; padding:3px 12px;
-                                 border-radius:999px; font-size:12px; font-weight:500;">
-                        @evento.Category
-                    </span>
+
+                    <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:16px;">
+                        <span style="font-size:12px; color:rgba(255,255,255,0.5); display:flex; align-items:center; gap:6px;">
+                            <i class="material-icons" style="font-size:14px; color:#E040FB;">location_on</i>
+                            @evento.Location
+                        </span>
+                        <span style="font-size:12px; color:rgba(255,255,255,0.5); display:flex; align-items:center; gap:6px;">
+                            <i class="material-icons" style="font-size:14px; color:#E040FB;">event</i>
+                            @evento.Date.ToString("dd/MM/yyyy")
+                        </span>
+                        <span style="font-size:12px; color:rgba(255,255,255,0.5); display:flex; align-items:center; gap:6px;">
+                            <i class="material-icons" style="font-size:14px; color:#E040FB;">confirmation_number</i>
+                            @(evento.Price == 0 ? "Entrada gratuita" : "$" + evento.Price.ToString("N0"))
+                        </span>
+                    </div>
+
+                    <a href="/Event/Detail/@evento.Id"
+                       style="display:block; text-align:center; padding:10px; background:#E040FB;
+                              color:#fff; border-radius:8px; font-size:13px; font-weight:500;
+                              text-decoration:none; transition:background 0.2s;"
+                       onmouseover="this.style.background='#c000d0';"
+                       onmouseout="this.style.background='#E040FB';">
+                        Ver más info
+                    </a>
                 </div>
             </div>
-        </div>
-    }
+        }
 
-    @if (!Model.Any())
-    {
-        <div class="col s12" style="text-align:center; padding:60px 0; color:#666;">
-            <i class="material-icons" style="font-size:48px;">event_busy</i>
-            <p style="margin-top:10px;">No hay eventos en esta categoría.</p>
-        </div>
-    }
-</div>
+        @if (!Model.Any())
+        {
+            <div style="grid-column:1/-1; text-align:center; padding:80px 0; color:#444;">
+                <i class="material-icons" style="font-size:64px;">event_busy</i>
+                <p style="margin-top:12px; font-size:16px;">No hay eventos en esta categoría.</p>
+            </div>
+        }
+    </div>
+</main>

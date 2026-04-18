@@ -4,69 +4,178 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Eventix</title>
-
-    <!-- Materialize CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
-    <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-
     <style>
+        * { box-sizing: border-box; }
         body {
             font-family: 'DM Sans', sans-serif;
             background-color: #0f0f1a;
             color: #ffffff;
+            margin: 0;
         }
-
         nav {
-            background-color: #1a1a2e;
-            padding: 0 20px;
+            background-color: #1a1a2e !important;
+            padding: 0 24px;
+            height: 64px;
+            line-height: 64px;
+            box-shadow: 0 2px 20px rgba(224,64,251,0.15);
         }
-
         nav .brand-logo {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 28px;
-            letter-spacing: 3px;
+            font-size: 30px;
+            letter-spacing: 4px;
             color: #E040FB !important;
         }
-
         nav ul a {
-            color: rgba(255,255,255,0.75) !important;
+            color: rgba(255,255,255,0.7) !important;
             font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        nav ul a:hover { color: #E040FB !important; background: transparent !important; }
+
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            padding: 80px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(224,64,251,0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 72px;
+            letter-spacing: 6px;
+            color: #fff;
+            margin: 0;
+            line-height: 1;
+        }
+        .hero h1 span { color: #E040FB; }
+        .hero p {
+            color: rgba(255,255,255,0.6);
+            font-size: 18px;
+            margin: 16px 0 32px;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 40px;
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat .number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 40px;
+            color: #E040FB;
+            line-height: 1;
+        }
+        .hero-stat .label {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        nav ul a:hover {
-            color: #E040FB !important;
-            background: transparent !important;
+        main { padding: 40px 24px; max-width: 1200px; margin: 0 auto; }
+
+        /* Toast de errores */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            background: #1e1e3a;
+            border-left: 3px solid #E040FB;
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 280px;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .toast.error { border-left-color: #ef5350; }
+        .toast.success { border-left-color: #66bb6a; }
+        .toast i { font-size: 18px; }
+        .toast.error i { color: #ef5350; }
+        .toast.success i { color: #66bb6a; }
+        .toast span { font-size: 13px; color: #fff; }
+        @@keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @@keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(120%); opacity: 0; }
         }
 
-        main {
-            padding: 30px 20px;
+        footer {
+            background: #1a1a2e;
+            text-align: center;
+            padding: 24px;
+            color: rgba(255,255,255,0.3);
+            font-size: 13px;
+            margin-top: 60px;
+            border-top: 1px solid #222;
         }
+        footer span { color: #E040FB; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="nav-wrapper">
-            <a href="/Event/Gallery" class="brand-logo">EVENTIX</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/Event/Gallery">Galería</a></li>
-                <li><a href="/Event/Index">Admin</a></li>
-                <li><a href="/Event/Create">Nuevo Evento</a></li>
-            </ul>
-        </div>
-    </nav>
+<nav>
+    <div class="nav-wrapper">
+        <a href="/Event/Gallery" class="brand-logo">EVENTIX</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/Event/Gallery"><i class="material-icons left" style="font-size:16px;">grid_view</i>Galería</a></li>
+            <li><a href="/Event/Index"><i class="material-icons left" style="font-size:16px;">admin_panel_settings</i>Admin</a></li>
+            <li><a href="/Event/Create"><i class="material-icons left" style="font-size:16px;">add_circle</i>Nuevo</a></li>
+        </ul>
+    </div>
+</nav>
 
-    <main>
-        @RenderBody()
-    </main>
+<div class="toast-container" id="toastContainer"></div>
 
-    <!-- Materialize JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+@RenderBody()
 
-    @await RenderSectionAsync("Scripts", required: false)
+<footer>
+    <p>Hecho con <span>♥</span> — Eventix 2026</p>
+</footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+    function showToast(message, type = 'error') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        const icon = type === 'error' ? 'error_outline' : 'check_circle';
+        toast.innerHTML = `<i class="material-icons">${icon}</i><span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.animation = 'slideOut 0.3s ease forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+</script>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

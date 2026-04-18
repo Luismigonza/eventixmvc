@@ -1,88 +1,172 @@
 ﻿@model EventixMVC.Models.Event
 
-<div class="row">
-    <div class="col s12 m8 offset-m2">
+<main style="padding: 48px 24px;">
+    <div style="max-width:680px; margin:0 auto;">
 
-        <h5 style="color:#E040FB; font-family:'Bebas Neue',sans-serif; 
-                   letter-spacing:2px; margin-bottom:24px;">
-            Crear Nuevo Evento
-        </h5>
+        <a href="/Event/Index" style="display:inline-flex; align-items:center; gap:6px;
+           color:rgba(255,255,255,0.5); text-decoration:none; font-size:13px; margin-bottom:24px;">
+            <i class="material-icons" style="font-size:16px;">arrow_back</i> Volver al panel
+        </a>
 
-        <div style="background:#1a1a2e; border-radius:12px; padding:30px;">
-            <form asp-action="Store" method="post">
+        <h4 style="font-family:'Bebas Neue',sans-serif; letter-spacing:2px;
+                   color:#E040FB; margin-bottom:24px;">Crear Nuevo Evento</h4>
 
-                <div class="row">
-                    <div class="input-field col s12 m6">
-                        <input asp-for="Name" id="Name" type="text" 
-                               style="color:#fff; border-bottom-color:#555;" />
-                        <label for="Name" style="color:#aaa;">Nombre del evento</label>
+        <div style="background:#1a1a2e; border-radius:16px; padding:40px 48px; border:1px solid #222;">
+            <form asp-action="Store" method="post" id="createForm">
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:36px 24px;">
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:0; grid-column:1/-1; margin-top:8px;">
+                        <label style="font-size:12px; color:#E040FB; text-transform:uppercase; letter-spacing:1px;">
+                            Nombre del evento *
+                        </label>
+                        <input asp-for="Name" type="text" placeholder="Ej: Festival de Jazz"
+                               style="background:#252540; border:1px solid #333; border-radius:8px;
+                                      height:48px; padding:10px 14px; color:#fff; font-size:14px; outline:none;
+                                      font-family:'DM Sans',sans-serif;" />
+                        <span asp-validation-for="Name" style="font-size:12px; color:#ef5350;"></span>
                     </div>
-                    <div class="input-field col s12 m6">
-                        <select asp-for="Category" id="Category" class="browser-default"
-                                style="background:#252540; color:#fff; border:none; 
-                                       border-bottom:1px solid #555; padding:8px; 
-                                       width:100%; margin-top:16px; border-radius:4px;">
-                            <option value="">Selecciona categoría</option>
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:0; grid-column:1/-1; margin-top:8px;">
+                        <label style="font-size:12px; color:#E040FB; text-transform:uppercase; letter-spacing:1px;">
+                            Categoría *
+                        </label>
+                        <select asp-for="Category" class="browser-default"
+                                style="background:#252540; border:1px solid #333; border-radius:8px;
+                                       height:48px; padding:10px 14px; color:#fff; font-size:14px; outline:none;
+                                       font-family:'DM Sans',sans-serif; width:100%;">
+                            <option value="">Selecciona...</option>
                             <option value="Música">Música</option>
                             <option value="Anime">Anime</option>
                             <option value="Deportes">Deportes</option>
                             <option value="Cultural">Cultural</option>
                         </select>
+                        <span asp-validation-for="Category" style="font-size:12px; color:#ef5350;"></span>
                     </div>
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:0; grid-column:1/-1; margin-top:8px;">
+                        <label style="font-size:12px; color:#E040FB; text-transform:uppercase; letter-spacing:1px;">
+                            Fecha *
+                        </label>
+                        <input asp-for="Date" type="date"
+                               style="background:#252540; border:1px solid #333; border-radius:8px;
+                                      height:48px; padding:10px 14px; color:#fff; font-size:14px; outline:none;
+                                      font-family:'DM Sans',sans-serif; color-scheme:dark;" />
+                        <span asp-validation-for="Date" style="font-size:12px; color:#ef5350;"></span>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:0; grid-column:1/-1; margin-top:8px;">
+                        <label style="font-size:12px; color:#E040FB; text-transform:uppercase; letter-spacing:1px;">
+                            Ubicación *
+                        </label>
+                        <input asp-for="Location" type="text" placeholder="Ciudad, lugar"
+                               style="background:#252540; border:1px solid #333; border-radius:8px;
+                                      height:48px; padding:10px 14px; color:#fff; font-size:14px; outline:none;
+                                      font-family:'DM Sans',sans-serif;" />
+                        <span asp-validation-for="Location" style="font-size:12px; color:#ef5350;"></span>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:0; grid-column:1/-1; margin-top:8px;">
+                        <label style="font-size:12px; color:#E040FB; text-transform:uppercase; letter-spacing:1px;">
+                            Precio (0 = gratuito)
+                        </label>
+                        <input asp-for="Price" type="number" min="0" placeholder="0"
+                               style="background:#252540; border:1px solid #333; border-radius:8px;
+                                      height:48px; padding:10px 14px; color:#fff; font-size:14px; outline:none;
+                                      font-family:'DM Sans',sans-serif;" />
+                        <span asp-validation-for="Price" style="font-size:12px; color:#ef5350;"></span>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:0; grid-column:1/-1; margin-top:8px;">
+                        <label style="font-size:12px; color:#E040FB; text-transform:uppercase; letter-spacing:1px;">
+                            Capacidad
+                        </label>
+                        <input asp-for="Capacity" type="number" min="1" placeholder="500"
+                               style="background:#252540; border:1px solid #333; border-radius:8px;
+                                      height:48px; padding:10px 14px; color:#fff; font-size:14px; outline:none;
+                                      font-family:'DM Sans',sans-serif;" />
+                        <span asp-validation-for="Capacity" style="font-size:12px; color:#ef5350;"></span>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:0; grid-column:1/-1; margin-top:8px;">
+                        <label style="font-size:12px; color:#E040FB; text-transform:uppercase; letter-spacing:1px;">
+                            Organizador *
+                        </label>
+                        <input asp-for="OrganizerName" type="text" placeholder="Nombre del organizador"
+                               style="background:#252540; border:1px solid #333; border-radius:8px;
+                                      height:48px; padding:10px 14px; color:#fff; font-size:14px; outline:none;
+                                      font-family:'DM Sans',sans-serif;" />
+                        <span asp-validation-for="OrganizerName" style="font-size:12px; color:#ef5350;"></span>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:0; grid-column:1/-1; margin-top:8px;">
+                        <label style="font-size:12px; color:#E040FB; text-transform:uppercase; letter-spacing:1px;">
+                            Estado
+                        </label>
+                        <select asp-for="Status" class="browser-default"
+                                style="background:#252540; border:1px solid #333; border-radius:8px;
+                                       height:48px; padding:10px 14px; color:#fff; font-size:14px; outline:none;
+                                       font-family:'DM Sans',sans-serif; width:100%;">
+                            <option value="Activo">Activo</option>
+                            <option value="Cancelado">Cancelado</option>
+                            <option value="Agotado">Agotado</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:6px; grid-column:1/-1;">
+                        <label style="font-size:12px; color:#E040FB; text-transform:uppercase; letter-spacing:1px;">
+                            Descripción *
+                        </label>
+                        <textarea asp-for="Description" rows="4" placeholder="Describe el evento..."
+                                  style="background:#252540; border:1px solid #333; border-radius:8px;
+                                         height:48px; padding:10px 14px; color:#fff; font-size:14px; outline:none;
+                                         font-family:'DM Sans',sans-serif; resize:vertical;"></textarea>
+                        <span asp-validation-for="Description" style="font-size:12px; color:#ef5350;"></span>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:6px; grid-column:1/-1;">
+                        <label style="font-size:12px; color:#E040FB; text-transform:uppercase; letter-spacing:1px;">
+                            URL del póster
+                        </label>
+                        <input asp-for="ImageUrl" type="url" placeholder="https://..."
+                               style="background:#252540; border:1px solid #333; border-radius:8px;
+                                      height:48px; padding:10px 14px; color:#fff; font-size:14px; outline:none;
+                                      font-family:'DM Sans',sans-serif;" />
+                    </div>
+
                 </div>
 
-                <div class="row">
-                    <div class="input-field col s12 m6">
-                        <input asp-for="Date" id="Date" type="date"
-                               style="color:#fff; border-bottom-color:#555;" />
-                        <label for="Date" style="color:#aaa;">Fecha</label>
-                    </div>
-                    <div class="input-field col s12 m6">
-                        <input asp-for="Location" id="Location" type="text"
-                               style="color:#fff; border-bottom-color:#555;" />
-                        <label for="Location" style="color:#aaa;">Ubicación</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s12">
-                        <textarea asp-for="Description" id="Description" 
-                                  class="materialize-textarea"
-                                  style="color:#fff; border-bottom-color:#555;"></textarea>
-                        <label for="Description" style="color:#aaa;">Descripción</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input asp-for="ImageUrl" id="ImageUrl" type="url"
-                               style="color:#fff; border-bottom-color:#555;" />
-                        <label for="ImageUrl" style="color:#aaa;">URL del póster / imagen</label>
-                    </div>
-                </div>
-
-                <div style="display:flex; gap:12px; margin-top:10px;">
-                    <button type="submit" class="btn waves-effect waves-light"
-                            style="background-color:#E040FB;">
-                        <i class="material-icons left">save</i>Guardar
+                <div style="display:flex; gap:12px; margin-top:28px;">
+                    <button type="submit"
+                            style="padding:12px 28px; background:#E040FB; color:#fff; border:none;
+                                   border-radius:8px; font-size:14px; font-weight:500; cursor:pointer;
+                                   font-family:'DM Sans',sans-serif;">
+                        <i class="material-icons" style="font-size:16px; vertical-align:middle; margin-right:6px;">save</i>
+                        Guardar evento
                     </button>
-                    <a href="/Event/Index" class="btn waves-effect"
-                       style="background-color:#333;">
-                        <i class="material-icons left">arrow_back</i>Cancelar
+                    <a href="/Event/Index"
+                       style="padding:12px 28px; background:#252540; color:rgba(255,255,255,0.6);
+                              border-radius:8px; font-size:14px; text-decoration:none; display:flex; align-items:center; gap:6px;">
+                        Cancelar
                     </a>
                 </div>
 
             </form>
         </div>
     </div>
-</div>
+</main>
 
 @section Scripts {
-    <script>
-        // Inicializa los selects de Materialize
-        document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('select');
-            M.FormSelect.init(elems);
-        });
-    </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const errors = document.querySelectorAll('[data-valmsg-for]');
+    const messages = [];
+    errors.forEach(e => {
+        if (e.textContent.trim() !== '')
+            messages.push(e.textContent.trim());
+    });
+    messages.forEach(msg => showToast(msg, 'error'));
+});
+</script>
 }
